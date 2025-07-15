@@ -29,6 +29,21 @@ def create_todos(todo: schemas.TodoCreate, db: Session = Depends(get_db)):
     db.refresh(db_todo)
     return db_todo
 
+
+
+@router.put("/todos/{todo_id}", response_model=schemas.TodoOut)
+def update_todo(todo_id:int, todo_data:schemas.TodoUpdate, db:Session = Depends(get_db)):
+    todo = db.query(models.Todo).filter(models.Todo.id==todo_id)
+    if not todo:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    todo.task = todo_data.task
+    todo.is_complete = todo_data.is_complete
+    db.commit()
+    db.refresh(todo)
+    return todo
+
+
+
 @router.delete('/todos/{todo_id}')
 def delete(todo_id:int, db: Session = Depends(get_db)):
     todo = db.query(models.Todo).filter(models.Todo.id == todo_id).first()
