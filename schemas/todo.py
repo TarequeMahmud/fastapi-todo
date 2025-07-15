@@ -1,6 +1,13 @@
 from pydantic import BaseModel
 
 
-class Todo(BaseModel):
-    id: int
+class TodoBase(BaseModel):
     task:str
+
+class TodoCreate(TodoBase):
+    pass
+
+class TodoOut(TodoBase):
+    id:int
+    class Config:
+        orm_mode = True

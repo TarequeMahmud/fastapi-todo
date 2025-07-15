@@ -1,6 +1,7 @@
-from typing import List
+from sqlalchemy import Column, Integer, String
+from database import Base
 
-from schemas.todo import Todo
-
-
-todos : List[Todo] = []
+class Todo(Base):
+    __tablename__ = "todos"
+    id = Column(Integer, primary_key=True, index=True)
+    task = Column(String, index=True)
